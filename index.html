@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Freshmen Portal | สื่อการเรียนการสอนการเขียนโปรแกรมคอมพิวเตอร์เบื้องต้น</title>
+    <meta name="description" content="ระบบการเรียนรู้ออนไลน์วิชาการเขียนโปรแกรมคอมพิวเตอร์เบื้องต้นสำหรับนักศึกษาชั้นปีที่ 1 ครอบคลุมพื้นฐาน ภาษา Python และแบบประเมินตามหลัก Bloom's Taxonomy">
+    
+    <!-- Google Fonts: Sarabun & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Sarabun:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Prism.js for code syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    
+    <!-- Local Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Pyodide CDN for in-browser Python execution -->
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.26.1/full/pyodide.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <span>Python Freshmen</span>
+                </div>
+                <button class="close-sidebar-btn" id="closeSidebarBtn">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <!-- Overall Progress Panel -->
+            <div class="progress-panel">
+                <div class="progress-label">
+                    <span>ความก้าวหน้าการเรียนรู้</span>
+                    <span id="overallProgressText">0%</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="overallProgressBar" style="width: 0%"></div>
+                </div>
+                <div class="progress-stats">
+                    <span>เรียนจบ <strong id="completedLessonsCount">0</strong> จาก <strong id="totalLessonsCount">0</strong> บทเรียน</span>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav" id="sidebarNav">
+                <ul class="nav-list">
+                    <li>
+                        <a href="#dashboard" class="nav-link active" id="navDashboard">
+                            <i class="fa-solid fa-house"></i> หน้าแรกและแดชบอร์ด
+                        </a>
+                    </li>
+                    <!-- Dynamic modules and lessons will be inserted here -->
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-status">
+                    <i class="fa-solid fa-circle-user"></i>
+                    <div>
+                        <span class="user-role">นักศึกษาชั้นปีที่ 1</span>
+                        <span class="user-institution">Computer Science Portal</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header bar -->
+            <header class="content-header">
+                <div class="header-left">
+                    <button class="mobile-menu-btn" id="mobileMenuBtn">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <div class="breadcrumb" id="breadcrumb">
+                        <span>หน้าหลัก</span> &gt; <span>ยินดีต้อนรับ</span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <!-- Pyodide Engine Status Indicator -->
+                    <div class="pyodide-status" id="pyodideStatus">
+                        <span class="status-dot warning"></span>
+                        <span class="status-text">กำลังโหลด Python Engine...</span>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="content-viewport" id="contentViewport">
+                <!-- ==================== DASHBOARD VIEW ==================== -->
+                <section class="content-section active" id="dashboardSection">
+                    <div class="dashboard-banner">
+                        <div class="banner-text">
+                            <h1>เริ่มต้นเรียนรู้การเขียนโปรแกรมคอมพิวเตอร์เบื้องต้น</h1>
+                            <p>บทเรียนออนไลน์เชิงโต้ตอบแบบอินเตอร์แอคทีฟวิชาการเขียนโปรแกรมคอมพิวเตอร์เบื้องต้น (Python Programming) ออกแบบสำหรับนักศึกษาปริญญาตรี ชั้นปีที่ 1</p>
+                            <button class="btn btn-primary btn-large" id="btnStartLearning">
+                                <i class="fa-solid fa-play"></i> เริ่มต้นเรียนรู้บทเรียนแรก
+                            </button>
+                        </div>
+                        <div class="banner-icon">
+                            <i class="fa-brands fa-python"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-grid">
+                        <!-- Left: Course Structure -->
+                        <div class="grid-card course-summary-card">
+                            <h3><i class="fa-solid fa-book-open"></i> โครงสร้างหลักสูตร (Curriculum)</h3>
+                            <div class="modules-overview">
+                                <div class="overview-item">
+                                    <div class="item-number">1</div>
+                                    <div class="item-detail">
+                                        <h4>พื้นฐานและโครงสร้างควบคุม</h4>
+                                        <p>ตัวแปร, ชนิดข้อมูล, ตัวดำเนินการคณิตศาสตร์/ตรรกศาสตร์, เงื่อนไข if-else, ลูปวนซ้ำ for/while</p>
+                                    </div>
+                                </div>
+                                <div class="overview-item">
+                                    <div class="item-number">2</div>
+                                    <div class="item-detail">
+                                        <h4>โครงสร้างข้อมูล (Data Structures)</h4>
+                                        <p>การจัดการรายการข้อมูลแบบเรียงลำดับและแบบคีย์-ค่า ด้วย List, Tuple, และ Dictionary</p>
+                                    </div>
+                                </div>
+                                <div class="overview-item">
+                                    <div class="item-number">3</div>
+                                    <div class="item-detail">
+                                        <h4>การใช้งานฟังก์ชัน (Functions)</h4>
+                                        <p>การจัดกลุ่มโค้ดทำงานด้วย def, การรับพารามิเตอร์และการรีเทิร์นค่ากลับไปใช้ต่อ</p>
+                                    </div>
+                                </div>
+                                <div class="overview-item">
+                                    <div class="item-number">4</div>
+                                    <div class="item-detail">
+                                        <h4>การจัดการไฟล์และการทำงานระดับสูง</h4>
+                                        <p>การเขียนอ่านไฟล์ภายนอก, ป้องกันโปรแกรมพังด้วยการดักจับข้อผิดพลาด try-except</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Right: Features & Stats -->
+                        <div class="grid-card features-card">
+                            <h3><i class="fa-solid fa-star"></i> ไฮไลท์พิเศษของระบบการเรียนรู้</h3>
+                            <ul class="features-list">
+                                <li>
+                                    <i class="fa-solid fa-terminal text-blue"></i>
+                                    <div>
+                                        <strong>รันโค้ด Python ในหน้าเว็บได้ทันที:</strong>
+                                        <p>ไม่ต้องติดตั้งโปรแกรมเสริมใดๆ เขียนโค้ดใน Sandbox และทดลองกด Run เพื่อดูผลลัพธ์ผ่านบราวเซอร์ได้เลย</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <i class="fa-solid fa-brain text-blue"></i>
+                                    <div>
+                                        <strong>แบบทดสอบ Bloom's Taxonomy:</strong>
+                                        <p>ท้าทายตนเองด้วยแบบทดสอบ 3 ระดับ ทั้งแบบวัดความเข้าใจ, เติมคำทำนายผลลัพธ์, และโจทย์เขียนโค้ดแก้ปัญหา</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <i class="fa-solid fa-floppy-disk text-blue"></i>
+                                    <div>
+                                        <strong>บันทึกความก้าวหน้าอัตโนมัติ:</strong>
+                                        <p>ระบบจดจำความก้าวหน้าของคุณและการทำแบบทดสอบผ่านระบบ Local Storage กลับมาเรียนเมื่อไหร่ก็ต่อจุดเดิมได้ทันที</p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- ==================== LESSON VIEW ==================== -->
+                <section class="content-section" id="lessonSection" style="display: none;">
+                    <!-- Lesson HTML content will be loaded here dynamically -->
+                    <div id="lessonBody"></div>
+                    
+                    <!-- Code Playground / Sandbox -->
+                    <div class="playground-wrapper">
+                        <div class="playground-header">
+                            <div class="title-area">
+                                <i class="fa-solid fa-code"></i>
+                                <span>Live Playground & Editor | ทดลองพิมพ์และทดสอบโค้ด</span>
+                            </div>
+                            <div class="actions">
+                                <button class="btn btn-secondary btn-sm" id="btnResetCode">
+                                    <i class="fa-solid fa-rotate-left"></i> รีเซ็ตโค้ด
+                                </button>
+                            </div>
+                        </div>
+                        <div class="playground-body">
+                            <div class="editor-container">
+                                <textarea id="codeEditor" spellcheck="false" placeholder="# เขียนโค้ดภาษา Python ที่นี่..."></textarea>
+                            </div>
+                            <div class="console-container">
+                                <div class="console-header">
+                                    <span>Console Output</span>
+                                    <button class="btn-clear-console" id="btnClearConsole" title="ล้างหน้าจอคอนโซล">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </div>
+                                <div class="console-output" id="consoleOutput">
+                                    ตู้คอนโซลผลลัพธ์การรันโปรแกรม...
+                                </div>
+                            </div>
+                        </div>
+                        <div class="playground-footer">
+                            <button class="btn btn-success" id="btnRunCode">
+                                <i class="fa-solid fa-play"></i> รันโค้ดโปรแกรม (Run)
+                            </button>
+                            <span class="tip-text"><i class="fa-solid fa-circle-info"></i> ปรับแต่งตัวอย่างโค้ดด้านบนแล้วทดลองรันดูได้เลย!</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Quiz Section based on Bloom's Taxonomy -->
+                    <div class="quiz-section-wrapper">
+                        <div class="quiz-section-header">
+                            <h2><i class="fa-solid fa-clipboard-question"></i> แบบทดสอบประเมินผลหลังเรียนรู้</h2>
+                            <p>วัดทักษะความรู้และความเข้าใจของคุณตามหลักการแบ่งระดับสติปัญญาของ Bloom's Taxonomy</p>
+                        </div>
+                        
+                        <div class="quiz-container" id="quizzesContainer">
+                            <!-- Quizzes are dynamically generated by JS -->
+                        </div>
+                        
+                        <div class="lesson-navigation-footer">
+                            <button class="btn btn-secondary" id="btnPrevLesson">
+                                <i class="fa-solid fa-arrow-left"></i> บทเรียนก่อนหน้า
+                            </button>
+                            <button class="btn btn-primary" id="btnMarkComplete">
+                                <i class="fa-solid fa-check-double"></i> เสร็จสิ้นบทเรียนนี้
+                            </button>
+                            <button class="btn btn-secondary" id="btnNextLesson">
+                                บทเรียนถัดไป <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            
+            <!-- Global Footer -->
+            <footer class="app-footer">
+                <p>&copy; 2026 Portal สื่อการเรียนคอมพิวเตอร์เบื้องต้น. พัฒนาและโฮสต์บน GitHub Pages.</p>
+                <p>ระดับการศึกษา: ปริญญาตรี ชั้นปีที่ 1 | ธีมโทนสีฟ้า-ขาว เพื่อความเป็นมิตรต่อการใช้งาน</p>
+            </footer>
+        </main>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="content.js"></script>
+    <script src="app.js"></script>
+    
+    <!-- Prism Syntax Highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+</body>
+</html>
